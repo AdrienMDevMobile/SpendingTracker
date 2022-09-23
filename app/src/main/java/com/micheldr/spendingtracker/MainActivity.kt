@@ -3,41 +3,36 @@ package com.micheldr.spendingtracker
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import com.jakewharton.threetenabp.AndroidThreeTen
+import com.micheldr.spendingtracker.data.SpendingDatabase
+import com.micheldr.spendingtracker.data.SpendingRepositoryImpl
 import com.micheldr.spendingtracker.ui.theme.SpendingTrackerTheme
+import com.micheldr.spendingtracker.view.SaveSpendingScreen
+import com.micheldr.spendingtracker.view.SpendingListScreen
+import com.micheldr.spendingtracker.viewmodel.SpendingViewModelImpl
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        AndroidThreeTen.init(this)
+
+        val viewModel = SpendingViewModelImpl(
+            SpendingRepositoryImpl(
+                SpendingDatabase.getDatabase(applicationContext).spendingDao()
+            )
+        )
+
         setContent {
             SpendingTrackerTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background
-                ) {
-                    Greeting("Android")
+                Column() {
+                    SaveSpendingScreen(viewModel = viewModel, modifier = Modifier.fillMaxWidth())
+                    SpendingListScreen(viewModel = viewModel, modifier = Modifier.fillMaxWidth())
                 }
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    SpendingTrackerTheme {
-        Greeting("Android")
     }
 }
