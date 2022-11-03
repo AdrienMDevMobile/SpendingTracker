@@ -1,19 +1,24 @@
-package com.micheldr.spendingtracker.viewmodel
+package com.micheldr.spendingtracker.view.viewmodel
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
+import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.viewModelScope
 import com.micheldr.spendingtracker.data.Spending
 import com.micheldr.spendingtracker.data.SpendingRepository
+import com.micheldr.spendingtracker.domain.SpendingError
 import com.micheldr.spendingtracker.view.toUiState
 import kotlinx.coroutines.launch
 import org.threeten.bp.OffsetDateTime
 import org.threeten.bp.OffsetDateTime.now
 
+
 class SpendingViewModelImpl(private val repository: SpendingRepository) : SpendingsViewModel() {
-    override val amount = mutableStateOf(0)
+    override val amount = mutableStateOf("")
     override val reason = mutableStateOf("")
     override val date = mutableStateOf(now())
+    override val amountError = mutableStateOf(false)
+    override val errorMessage: MutableState<SpendingError?> = mutableStateOf(null)
     override val spendingList: MutableState<List<SpendingUiState>> = mutableStateOf(emptyList())
 
     override fun notifyViewAction(action: ViewAction) {
@@ -26,8 +31,10 @@ class SpendingViewModelImpl(private val repository: SpendingRepository) : Spendi
         }
     }
 
-    private fun onAmountChanged(amount: Int) {
+    private fun onAmountChanged(amount: String) {
         this.amount.value = amount
+        showAmountError(amount.isDigitsOnly())
+
     }
 
     private fun onReasonChanged(reason: String) {
@@ -40,7 +47,36 @@ class SpendingViewModelImpl(private val repository: SpendingRepository) : Spendi
 
     private fun onSaveSpending() {
         viewModelScope.launch {
-            repository.saveSpending(Spending(value = amount.value, reason = reason.value, date = date.value))
+            if (amount.value.isNotEmpty() && amount.value.isDigitsOnly()) {
+                showAmountError(false)
+                repository.saveSpending(
+                    Spending(
+                        value = amount.value.toInt(),
+                        reason = reason.value,
+                        date = date.value
+                    )
+                )
+            } else {
+                showAmountError(true)
+            }
+        }
+    }
+
+    private fun showAmountError(isError: Boolean) {
+        amountError.value = isError
+        if (isError) {
+            errorMessage.value = null
+        } else {
+            errorMessage.value = SpendingError.AMOUNT_ERROR
+        }
+    }
+
+    private fun showSaveError(isError: Boolean) {
+        amountError.value = isError
+        if (isError) {
+            errorMessage.value = null
+        } else {
+            errorMessage.value = SpendingError.SAVE_ERROR
         }
     }
 
