@@ -18,6 +18,7 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.jakewharton.threetenabp.AndroidThreeTen
 import com.micheldr.spendingtracker.ui.theme.SpendingTrackerTheme
 import com.micheldr.spendingtracker.viewmodel.SpendingViewModelMock
 import com.micheldr.spendingtracker.viewmodel.SpendingsViewModel
@@ -34,7 +35,7 @@ fun SaveSpendingScreen(
     Column(modifier = modifier) {
         TextField(
             value = viewModel.amount.value.toString(), onValueChange = { newValue ->
-                if (!newValue.isNullOrEmpty()) {
+                if (!newValue.isEmpty()) {
                     viewModel.notifyViewAction(SpendingsViewModel.ViewAction.AmountChanged(newValue.toInt()))
                 }
             },
@@ -107,6 +108,8 @@ fun onDateClick(viewModel: SpendingsViewModel, mYear: Int, mMonth: Int, mDayOfMo
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
+    AndroidThreeTen.init(LocalContext.current)
+
     SpendingTrackerTheme {
         SaveSpendingScreen(SpendingViewModelMock())
     }
