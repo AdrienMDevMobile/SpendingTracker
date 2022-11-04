@@ -11,12 +11,12 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.jakewharton.threetenabp.AndroidThreeTen
-import com.micheldr.spendingtracker.data.SpendingDatabase
-import com.micheldr.spendingtracker.data.SpendingRepositoryImpl
+import com.micheldr.spendingtracker.domain.useCase.SpendingUseCaseFactory
 import com.micheldr.spendingtracker.ui.theme.SpendingTrackerTheme
 import com.micheldr.spendingtracker.view.screen.SaveSpendingScreen
 import com.micheldr.spendingtracker.view.screen.SpendingListScreen
 import com.micheldr.spendingtracker.view.viewmodel.SpendingViewModelImpl
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,14 +24,15 @@ class MainActivity : ComponentActivity() {
 
         AndroidThreeTen.init(this)
 
+        val factory = SpendingUseCaseFactory(applicationContext)
         val viewModel = SpendingViewModelImpl(
-            SpendingRepositoryImpl(
-                SpendingDatabase.getDatabase(applicationContext).spendingDao()
-            )
+            factory.saveSpendingUseCase,
+            factory.getSpendingsPaginateUseCase
         )
 
         setContent {
             SpendingTrackerTheme {
+
                 ConstraintLayout(
                     modifier = Modifier
                         .fillMaxSize()

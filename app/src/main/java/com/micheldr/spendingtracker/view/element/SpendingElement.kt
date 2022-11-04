@@ -21,11 +21,12 @@ import org.threeten.bp.*
 fun SpendingElement(
     spending: SpendingUiState
 ) {
-    val font = TextStyle(fontSize = 16.sp)
+    val font = TextStyle(fontSize = 20.sp)
     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
         Text(modifier = Modifier.weight(0.4f), text = spending.date, style = font)
         Text(modifier = Modifier.weight(0.1f), text = spending.value.toString(), style = font)
         Text(modifier = Modifier.weight(0.5f), text = spending.reason, style = font)
+        //Put edit button here
     }
 }
 
@@ -40,8 +41,7 @@ fun PreviewSpendingElement() {
                 value = 50,
                 reason = "Test reason---------------------------",
                 date = OffsetDateTime.of(
-                    LocalDate.of(2022, Month.JANUARY, 21), LocalTime.MIDNIGHT,
-                    ZoneOffset.UTC
+                    LocalDate.of(2022, Month.JANUARY, 21), LocalTime.MIDNIGHT, ZoneOffset.UTC
                 )
             ).toUiState()
         )

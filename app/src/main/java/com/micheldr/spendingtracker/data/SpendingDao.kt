@@ -3,19 +3,16 @@ package com.micheldr.spendingtracker.data
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
-import com.micheldr.spendingtracker.data.Spending
-import org.threeten.bp.OffsetDateTime
+import java.util.*
 
 @Dao
 interface SpendingDao {
-    @Query("SELECT * FROM spending order by date")
-    suspend fun getAll(): List<Spending>
-
-    @Query("SELECT * FROM spending where date between :dateBegin AND :dateEnd")
-    suspend fun getByDate(dateBegin: OffsetDateTime, dateEnd:OffsetDateTime): List<Spending>
-
     @Insert
     suspend fun insertAll(vararg spendings: Spending)
+
+    @Query("SELECT * FROM spending order by date LIMIT + :amount OFFSET :offset")
+    fun getSpendingsPaged(offset: Int, amount: Int): List<Spending>
+    //    @Query("SELECT * FROM spending WHERE ROWNUM >=  :offset AND ROWNUM < :offset + :amount order by date")
 
     /*
     @Query("SELECT * FROM user WHERE uid IN (:userIds)")

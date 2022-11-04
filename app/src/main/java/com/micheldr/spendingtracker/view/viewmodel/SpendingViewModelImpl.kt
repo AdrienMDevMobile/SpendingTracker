@@ -5,21 +5,50 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.viewModelScope
 import com.micheldr.spendingtracker.data.Spending
-import com.micheldr.spendingtracker.data.SpendingRepository
 import com.micheldr.spendingtracker.domain.SpendingError
+import com.micheldr.spendingtracker.domain.useCase.IGetSpendingsPaginatedUseCase
+import com.micheldr.spendingtracker.domain.useCase.ISaveSpendingUseCase
+import com.micheldr.spendingtracker.view.SavingsListScreenState
+import com.micheldr.spendingtracker.view.element.paginator.PaginatorImpl
 import com.micheldr.spendingtracker.view.toUiState
 import kotlinx.coroutines.launch
 import org.threeten.bp.OffsetDateTime
 import org.threeten.bp.OffsetDateTime.now
 
-
-class SpendingViewModelImpl(private val repository: SpendingRepository) : SpendingsViewModel() {
+class SpendingViewModelImpl(
+    private val saveSpendingUseCase: ISaveSpendingUseCase,
+    private val getSpendingsPaginatedUseCase: IGetSpendingsPaginatedUseCase
+) : SpendingsViewModel() {
     override val amount = mutableStateOf("")
     override val reason = mutableStateOf("")
     override val date = mutableStateOf(now())
     override val amountError = mutableStateOf(false)
     override val errorMessage: MutableState<SpendingError?> = mutableStateOf(null)
-    override val spendingList: MutableState<List<SpendingUiState>> = mutableStateOf(emptyList())
+    override val spendingsState = mutableStateOf(SavingsListScreenState())
+
+    //A injecter
+    private val paginator = PaginatorImpl(
+        initalKey = spendingsState.value.page,
+        onLoadUpdated = {
+            spendingsState.value = spendingsState.value.copy(isLoading = it)
+        },
+        onRequest = { nextPage ->
+            getSpendingsPaginatedUseCase.execute(nextPage)
+        },
+        getNextKey = {
+            spendingsState.value.page + 1
+        },
+        onError = {
+            spendingsState.value = spendingsState.value.copy(error = it?.localizedMessage)
+        },
+        onSuccess = { items, newKey ->
+            spendingsState.value = spendingsState.value.copy(
+                items = spendingsState.value.items + items.map { it.toUiState() },
+                page = newKey,
+                endReached = items.isEmpty()
+            )
+        }
+    )
 
     override fun notifyViewAction(action: ViewAction) {
         when (action) {
@@ -47,9 +76,9 @@ class SpendingViewModelImpl(private val repository: SpendingRepository) : Spendi
 
     private fun onSaveSpending() {
         viewModelScope.launch {
-            if (amount.value.isNotEmpty() && amount.value.isDigitsOnly()) {
+            if (!amount.value.isNullOrEmpty() && amount.value.isDigitsOnly()) {
                 showAmountError(false)
-                repository.saveSpending(
+                saveSpendingUseCase.execute(
                     Spending(
                         value = amount.value.toInt(),
                         reason = reason.value,
@@ -80,11 +109,13 @@ class SpendingViewModelImpl(private val repository: SpendingRepository) : Spendi
         }
     }
 
-    private fun onLoadSpending() {
+    fun loadNextItem() {
         viewModelScope.launch {
-            spendingList.value = repository.getSpendings().map {
-                it.toUiState()
-            }
+            paginator.loadNextItem()
         }
+    }
+
+    private fun onLoadSpending() {
+        loadNextItem()
     }
 }
