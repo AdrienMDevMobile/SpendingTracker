@@ -8,9 +8,10 @@ import com.micheldr.spendingtracker.data.Spending
 import com.micheldr.spendingtracker.domain.SpendingError
 import com.micheldr.spendingtracker.domain.useCase.IGetSpendingsPaginatedUseCase
 import com.micheldr.spendingtracker.domain.useCase.ISaveSpendingUseCase
-import com.micheldr.spendingtracker.view.SavingsListScreenState
+import com.micheldr.spendingtracker.view.uiState.SavingsListScreenState
 import com.micheldr.spendingtracker.view.element.paginator.PaginatorImpl
 import com.micheldr.spendingtracker.view.toUiState
+import com.micheldr.spendingtracker.view.uiState.LoadingButtonUiState
 import kotlinx.coroutines.launch
 import org.threeten.bp.OffsetDateTime
 import org.threeten.bp.OffsetDateTime.now
@@ -24,6 +25,7 @@ class SpendingViewModelImpl(
     override val date = mutableStateOf(now())
     override val amountError = mutableStateOf(false)
     override val errorMessage: MutableState<SpendingError?> = mutableStateOf(null)
+    override val loadingButtonState: MutableState<LoadingButtonUiState> = mutableStateOf(LoadingButtonUiState())
     override val spendingsState = mutableStateOf(SavingsListScreenState())
 
     //A injecter
@@ -78,13 +80,7 @@ class SpendingViewModelImpl(
         viewModelScope.launch {
             if (!amount.value.isNullOrEmpty() && amount.value.isDigitsOnly()) {
                 showAmountError(false)
-                saveSpendingUseCase.execute(
-                    Spending(
-                        value = amount.value.toInt(),
-                        reason = reason.value,
-                        date = date.value
-                    )
-                )
+                saveSpendingUseCase.execute(Spending(value = amount.value.toInt(), reason = reason.value, date = date.value))
             } else {
                 showAmountError(true)
             }
@@ -109,13 +105,14 @@ class SpendingViewModelImpl(
         }
     }
 
-    fun loadNextItem() {
+    fun loadNextItem(){
         viewModelScope.launch {
             paginator.loadNextItem()
         }
     }
 
     private fun onLoadSpending() {
+        loadingButtonState.value = LoadingButtonUiState(false)
         loadNextItem()
     }
 }

@@ -14,7 +14,7 @@ import com.jakewharton.threetenabp.AndroidThreeTen
 import com.micheldr.spendingtracker.data.Spending
 import com.micheldr.spendingtracker.ui.theme.SpendingTrackerTheme
 import com.micheldr.spendingtracker.view.toUiState
-import com.micheldr.spendingtracker.view.viewmodel.SpendingUiState
+import com.micheldr.spendingtracker.view.uiState.SpendingUiState
 import org.threeten.bp.*
 
 @Composable

@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Suivi des dépenses</string>
+    <string name="amount_error">Montant incorrecte</string>
+    <string name="save_error">Nous n\'avons pas pu enregistrer la dépense</string>
+    <string name="save_button">Sauvegarder</string>
+    <string name="load_button">Charger</string>
+    <string name="reason_field">Raison</string>
 </resources>

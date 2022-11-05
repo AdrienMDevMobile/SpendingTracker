@@ -1,7 +1,7 @@
 package com.micheldr.spendingtracker.view
 
 import com.micheldr.spendingtracker.data.Spending
-import com.micheldr.spendingtracker.view.viewmodel.SpendingUiState
+import com.micheldr.spendingtracker.view.uiState.SpendingUiState
 
 fun Spending.toUiState() = SpendingUiState(
     value = value,

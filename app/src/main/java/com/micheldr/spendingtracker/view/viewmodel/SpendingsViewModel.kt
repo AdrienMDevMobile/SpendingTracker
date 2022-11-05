@@ -3,8 +3,10 @@ package com.micheldr.spendingtracker.view.viewmodel
 import androidx.compose.runtime.MutableState
 import androidx.lifecycle.ViewModel
 import com.micheldr.spendingtracker.domain.SpendingError
-import com.micheldr.spendingtracker.view.SavingsListScreenState
+import com.micheldr.spendingtracker.view.uiState.LoadingButtonUiState
+import com.micheldr.spendingtracker.view.uiState.SavingsListScreenState
 import org.threeten.bp.OffsetDateTime
+
 
 abstract class SpendingsViewModel() : ViewModel() {
 
@@ -13,7 +15,7 @@ abstract class SpendingsViewModel() : ViewModel() {
     abstract val date: MutableState<OffsetDateTime>
     abstract val amountError: MutableState<Boolean>
     abstract val errorMessage: MutableState<SpendingError?>
-
+    abstract val loadingButtonState: MutableState<LoadingButtonUiState>
     abstract val spendingsState: MutableState<SavingsListScreenState>
 
     sealed class ViewAction {

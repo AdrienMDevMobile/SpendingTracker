@@ -1,6 +1,4 @@
-package com.micheldr.spendingtracker.view
-
-import com.micheldr.spendingtracker.view.viewmodel.SpendingUiState
+package com.micheldr.spendingtracker.view.uiState
 
 data class SavingsListScreenState(
     val isLoading: Boolean = false,
