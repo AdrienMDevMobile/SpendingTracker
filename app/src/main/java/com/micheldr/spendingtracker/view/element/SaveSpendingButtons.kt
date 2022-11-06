@@ -39,10 +39,7 @@ fun DateButton(value: OffsetDateTime, context: Context, onDateClick: ((Int, Int,
             ).show()
         }
     ) {
-        Column(
-            modifier = Modifier.wrapContentSize(),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
+        Column(modifier = Modifier.wrapContentSize(), horizontalAlignment = Alignment.CenterHorizontally) {
             Text(text = value.toLongString())
             Image(
                 painter = painterResource(id = R.drawable.ic_baseline_access_time_24),
@@ -52,39 +49,4 @@ fun DateButton(value: OffsetDateTime, context: Context, onDateClick: ((Int, Int,
             )
         }
     }
-}
-
-@Composable
-fun SmallButton(icon: Int, onClick: (() -> Unit), isEnabled: Boolean = true) {
-    Box(
-        modifier = Modifier.clickable { onClick() }
-    ) {
-        Icon(
-            painter = painterResource(icon),
-            contentDescription = stringResource(R.string.save_button),
-            modifier = Modifier.size(buttonWidth, buttonHeight),
-            tint = if (isEnabled) {
-                MaterialTheme.colors.onBackground
-            } else {
-                MaterialTheme.colors.onBackgroundDisabled
-            }
-        )
-    }
-    /*
-    Button(
-        onClick = { viewModel.notifyViewAction(SpendingsViewModel.ViewAction.SaveSpending) },
-        modifier = Modifier
-            .wrapContentSize()
-            .padding(vertical = buttonPadding).background(Color.Transparent),
-        contentPadding = PaddingValues(0.dp),
-    ) {
-        Icon(
-            painter = painterResource(R.drawable.ic_baseline_save_24),
-            contentDescription = stringResource(R.string.save_button),
-            modifier = Modifier.size(buttonWidth, buttonHeight),
-            tint = MaterialTheme.colors.onBackground,
-        )
-        //Spacer(Modifier.size(ButtonDefaults.IconSpacing))
-        //Text(stringResource(R.string.save_button))
-    } */
 }

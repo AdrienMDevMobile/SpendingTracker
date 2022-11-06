@@ -7,21 +7,23 @@ import com.micheldr.spendingtracker.view.uiState.LoadingButtonUiState
 import com.micheldr.spendingtracker.view.uiState.SavingsListScreenState
 import org.threeten.bp.OffsetDateTime
 
-
 abstract class SpendingsViewModel() : ViewModel() {
 
     abstract val amount: MutableState<String>
     abstract val reason: MutableState<String>
     abstract val date: MutableState<OffsetDateTime>
     abstract val amountError: MutableState<Boolean>
+    abstract val isCheque: MutableState<Boolean>
     abstract val errorMessage: MutableState<SpendingError?>
-    abstract val loadingButtonState: MutableState<LoadingButtonUiState>
+    abstract val autoDeleteActivated: MutableState<Boolean>
     abstract val spendingsState: MutableState<SavingsListScreenState>
 
     sealed class ViewAction {
         class AmountChanged(val amount: String) : ViewAction()
         class ReasonChanged(val reason: String) : ViewAction()
         class DateChanged(val date: OffsetDateTime) : ViewAction()
+        class IsChequeChanged(val checked:Boolean) : ViewAction()
+        class IsAutoDeleteChanged(val activated:Boolean) : ViewAction()
         object SaveSpending : ViewAction()
         object LoadSpending : ViewAction()
     }

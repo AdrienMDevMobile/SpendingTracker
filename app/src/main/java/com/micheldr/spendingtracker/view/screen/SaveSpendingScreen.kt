@@ -10,17 +10,19 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.adrienmandroid.datastore.view.ImageButton
 import com.adrienmandroid.datastore.view.SaveTextField
 import com.jakewharton.threetenabp.AndroidThreeTen
+import com.micheldr.spendingtracker.R
 import com.micheldr.spendingtracker.ui.theme.SpendingTrackerTheme
+import com.micheldr.spendingtracker.view.element.AutoDelete
+import com.micheldr.spendingtracker.view.element.ChequeSwitch
+import com.micheldr.spendingtracker.view.element.DateButton
 import com.micheldr.spendingtracker.view.viewmodel.SpendingViewModelMock
 import com.micheldr.spendingtracker.view.viewmodel.SpendingsViewModel
 import org.threeten.bp.OffsetDateTime
 import org.threeten.bp.LocalDateTime.of as ofdate
 import org.threeten.bp.OffsetDateTime.of as ofodt
-import com.micheldr.spendingtracker.R
-import com.micheldr.spendingtracker.view.element.DateButton
-import com.micheldr.spendingtracker.view.element.SmallButton
 
 
 @Composable
@@ -69,21 +71,27 @@ fun SaveSpendingScreen(
 
 
             Column {
-                SmallButton(
+                ImageButton(
                     icon = R.drawable.ic_baseline_save_24,
                     onClick = {
                         viewModel.notifyViewAction(SpendingsViewModel.ViewAction.SaveSpending)
                     }
                 )
 
-                SmallButton(
-                    icon = R.drawable.ic_baseline_upload_24,
-                    onClick = {
-                        viewModel.notifyViewAction(SpendingsViewModel.ViewAction.SaveSpending)
-                    },
-                    isEnabled = viewModel.loadingButtonState.value.isEnabled
-                )
+                ChequeSwitch(viewModel.isCheque.value) { checked ->
+                    viewModel.notifyViewAction(
+                        SpendingsViewModel.ViewAction.IsChequeChanged(checked)
+                    )
+                }
             }
+
+            Spacer(modifier = Modifier.width(20.dp))
+
+            AutoDelete(activated = viewModel.autoDeleteActivated.value, onActivation = {
+                viewModel.notifyViewAction(
+                    SpendingsViewModel.ViewAction.IsAutoDeleteChanged(it)
+                )
+            }, onTimeLimitChanged = { })
 
         }
 
@@ -114,7 +122,7 @@ fun onDateClick(viewModel: SpendingsViewModel, mYear: Int, mMonth: Int, mDayOfMo
 
 @Preview(showBackground = true)
 @Composable
-fun DefaultPreview() {
+fun SaveScreenPreviw() {
     AndroidThreeTen.init(LocalContext.current)
 
     SpendingTrackerTheme {

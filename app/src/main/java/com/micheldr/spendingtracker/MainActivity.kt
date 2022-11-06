@@ -17,7 +17,6 @@ import com.micheldr.spendingtracker.view.screen.SaveSpendingScreen
 import com.micheldr.spendingtracker.view.screen.SpendingListScreen
 import com.micheldr.spendingtracker.view.viewmodel.SpendingViewModelImpl
 
-
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,18 +32,14 @@ class MainActivity : ComponentActivity() {
         setContent {
             SpendingTrackerTheme {
 
-                ConstraintLayout(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(10.dp)
-                ) {
+                ConstraintLayout(modifier = Modifier.fillMaxSize().padding(10.dp)) {
                     val (list, save) = createRefs()
 
                     SaveSpendingScreen(viewModel = viewModel, modifier = Modifier
                         .fillMaxWidth()
                         .constrainAs(save) {
                             height = Dimension.wrapContent
-                            bottom.linkTo(parent.bottom, margin = 30.dp)
+                            bottom.linkTo(parent.bottom)
                             top.linkTo(list.bottom)
                             start.linkTo(parent.start)
                             end.linkTo(parent.end)

@@ -5,13 +5,14 @@ import androidx.room.Insert
 import androidx.room.Query
 import java.util.*
 
+
 @Dao
 interface SpendingDao {
     @Insert
     suspend fun insertAll(vararg spendings: Spending)
 
-    @Query("SELECT * FROM spending order by date LIMIT + :amount OFFSET :offset")
-    fun getSpendingsPaged(offset: Int, amount: Int): List<Spending>
+    @Query("SELECT * FROM spending order by date desc LIMIT + :amount OFFSET :offset")
+    fun getSpendingsPaged(offset:Int, amount : Int): List<Spending>
     //    @Query("SELECT * FROM spending WHERE ROWNUM >=  :offset AND ROWNUM < :offset + :amount order by date")
 
     /*

@@ -47,3 +47,6 @@ fun SpendingTrackerTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @C
 
 val Colors.onBackgroundDisabled: Color
     get() = disabled
+
+val Colors.highlightBackGround: Color
+    get() = highlight

@@ -5,4 +5,11 @@
     <string name="save_button">Sauvegarder</string>
     <string name="load_button">Charger</string>
     <string name="reason_field">Raison</string>
+    <string name="autoDeleteActivated">Auto suppression</string>
+    <string name="delete_one_year">1 an</string>
+    <string name="delete_three_months">3 mois</string>
+    <string name="delete_one_month">1 mois</string>
+    <string name="delete_one_week">1 sem.</string>
+    <string name="load_savings_button">Cliquez pour charger</string>
+    <string name="isCheque">Cheque</string>
 </resources>

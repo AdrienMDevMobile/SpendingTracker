@@ -23,9 +23,10 @@ class SpendingViewModelImpl(
     override val amount = mutableStateOf("")
     override val reason = mutableStateOf("")
     override val date = mutableStateOf(now())
+    override val isCheque: MutableState<Boolean> = mutableStateOf(false)
+    override val autoDeleteActivated: MutableState<Boolean> = mutableStateOf(false)
     override val amountError = mutableStateOf(false)
     override val errorMessage: MutableState<SpendingError?> = mutableStateOf(null)
-    override val loadingButtonState: MutableState<LoadingButtonUiState> = mutableStateOf(LoadingButtonUiState())
     override val spendingsState = mutableStateOf(SavingsListScreenState())
 
     //A injecter
@@ -58,6 +59,8 @@ class SpendingViewModelImpl(
             is ViewAction.AmountChanged -> onAmountChanged(action.amount)
             is ViewAction.ReasonChanged -> onReasonChanged(action.reason)
             is ViewAction.DateChanged -> onDateChanged(action.date)
+            is ViewAction.IsChequeChanged -> onIsChequeChanged(action.checked)
+            is ViewAction.IsAutoDeleteChanged -> onIsAutoDeleteChanged(action.activated)
             is ViewAction.LoadSpending -> onLoadSpending()
         }
     }
@@ -74,6 +77,14 @@ class SpendingViewModelImpl(
 
     private fun onDateChanged(date: OffsetDateTime) {
         this.date.value = date
+    }
+
+    private fun onIsChequeChanged(checked:Boolean){
+        this.isCheque.value = checked
+    }
+
+    private fun onIsAutoDeleteChanged(activated:Boolean){
+        this.autoDeleteActivated.value = activated
     }
 
     private fun onSaveSpending() {
@@ -112,7 +123,6 @@ class SpendingViewModelImpl(
     }
 
     private fun onLoadSpending() {
-        loadingButtonState.value = LoadingButtonUiState(false)
         loadNextItem()
     }
 }
