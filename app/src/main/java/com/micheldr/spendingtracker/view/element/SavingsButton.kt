@@ -1,10 +1,10 @@
-package com.adrienmandroid.datastore.view
+package com.micheldr.spendingtracker.view.element
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
@@ -21,8 +21,6 @@ import com.jakewharton.threetenabp.AndroidThreeTen
 import com.micheldr.spendingtracker.R
 import com.micheldr.spendingtracker.ui.theme.SpendingTrackerTheme
 import com.micheldr.spendingtracker.ui.theme.onBackgroundDisabled
-import com.micheldr.spendingtracker.view.screen.buttonHeight
-import com.micheldr.spendingtracker.view.screen.buttonWidth
 
 @Composable
 fun ImageButton(
@@ -37,7 +35,7 @@ fun ImageButton(
         Icon(
             painter = painterResource(icon),
             contentDescription = stringResource(R.string.save_button),
-            modifier = Modifier.size(buttonWidth, buttonHeight),
+            modifier = Modifier.fillMaxSize(),
             tint = if (isEnabled) {
                 MaterialTheme.colors.onBackground
             } else {

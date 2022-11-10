@@ -11,16 +11,16 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.adrienmandroid.datastore.view.ImageButton
 import com.jakewharton.threetenabp.AndroidThreeTen
+import com.micheldr.spendingtracker.R
 import com.micheldr.spendingtracker.data.Spending
 import com.micheldr.spendingtracker.ui.theme.SpendingTrackerTheme
-import com.micheldr.spendingtracker.view.toUiState
+import com.micheldr.spendingtracker.ui.theme.highlightBackGround
+import com.micheldr.spendingtracker.view.uiMapper.toUiState
 import com.micheldr.spendingtracker.view.uiState.SpendingUiState
 import org.threeten.bp.*
-import com.micheldr.spendingtracker.R
-import com.micheldr.spendingtracker.ui.theme.highlightBackGround
 
+const val iconWeight = 0.08f
 
 @Composable
 fun SpendingElement(
@@ -28,11 +28,16 @@ fun SpendingElement(
 ) {
     val spacerWidth = 5.dp
     val font = TextStyle(fontSize = 20.sp)
-    Row(modifier = Modifier.fillMaxWidth().background(color = if (spending.highlight) {
-        MaterialTheme.colors.highlightBackGround
-    } else {
-        MaterialTheme.colors.background
-    }),
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(
+                color = if (spending.highlight) {
+                    MaterialTheme.colors.highlightBackGround
+                } else {
+                    MaterialTheme.colors.background
+                }
+            ),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Text(modifier = Modifier.weight(0.1f), text = spending.date, style = font)
@@ -40,30 +45,22 @@ fun SpendingElement(
         Text(modifier = Modifier.weight(0.1f), text = spending.value.toString(), style = font)
         Spacer(modifier = Modifier.width(spacerWidth))
         Text(modifier = Modifier.weight(0.5f), text = spending.reason, style = font)
+        MoneyOriginIcon(state = spending.origin, modifier = Modifier.weight(iconWeight))
         ImageButton(
             icon = R.drawable.ic_baseline_delete_24,
             onClick = {
             },
-            modifier = Modifier.weight(0.08f)
+            modifier = Modifier.weight(iconWeight)
         )
         Spacer(modifier = Modifier.width(spacerWidth))
         ImageButton(
             icon = R.drawable.ic_baseline_edit_24,
             onClick = {
             },
-            modifier = Modifier.weight(0.08f)
+            modifier = Modifier.weight(iconWeight)
         )
         Spacer(modifier = Modifier.width(spacerWidth))
-        ImageButton(
-            icon = if (spending.highlight) {
-                R.drawable.ic_baseline_star_full_24
-            } else {
-                R.drawable.ic_baseline_star_empty
-            },
-            onClick = {
-            },
-            modifier = Modifier.weight(0.08f)
-        )
+        HighlightButton(spending.highlight, Modifier.weight(iconWeight)) {}
     }
 }
 

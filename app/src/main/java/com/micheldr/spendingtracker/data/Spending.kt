@@ -13,5 +13,6 @@ data class Spending(
     @ColumnInfo(name = "value") val value: Int,
     @ColumnInfo(name = "reason") val reason: String,
     @ColumnInfo(name = "date") val date: OffsetDateTime? = null,
-    @ColumnInfo(name = "highlight") val highlight:Boolean = false
+    @ColumnInfo(name = "highlight") val highlight:Boolean = false,
+    @ColumnInfo(name = "origin") val moneyOrigin: MoneyOrigin = MoneyOrigin.CREDIT_CARD
 )

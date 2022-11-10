@@ -3,29 +3,37 @@ package com.micheldr.spendingtracker.view.element
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import com.adrienmandroid.datastore.view.TextButton
 import com.google.accompanist.flowlayout.FlowRow
 import com.micheldr.spendingtracker.R
+import com.micheldr.spendingtracker.data.AutoDeleteChoice
+import com.micheldr.spendingtracker.view.uiState.AutoDeleteUiState
+
 
 @Composable
 fun AutoDelete(
-    activated: Boolean,
+    uiState: AutoDeleteUiState,
+    modifier: Modifier = Modifier,
     onActivation: (Boolean) -> Unit,
     onTimeLimitChanged: () -> Unit
 ) {
-    Column {
+    Column(modifier) {
         Text(text = stringResource(id = R.string.autoDeleteActivated))
 
-        SavingSwitch(checked = activated, size = SwitchSize.Large, onCheckedChanged = onActivation)
+        SavingSwitch(
+            checked = uiState.isActivated,
+            size = SwitchSize.Large,
+            onCheckedChanged = onActivation
+        )
 
         //TODO remplacer par une génération automatique, depuis une liste
-        FlowRow() {
-            TextButton(R.string.delete_one_year, isEnabled = activated) {}
-            TextButton(R.string.delete_three_months, isEnabled = activated) {}
-            TextButton(R.string.delete_one_month, isEnabled = activated) {}
-            TextButton(R.string.delete_one_week, isEnabled = activated) {}
+        FlowRow {
+            TextButton(R.string.delete_one_year, isEnabled = uiState.isActivated) {}
+            TextButton(R.string.delete_three_months, isEnabled = uiState.isActivated) {}
+            TextButton(R.string.delete_one_month, isEnabled = uiState.isActivated) {}
+            TextButton(R.string.delete_one_week, isEnabled = uiState.isActivated) {}
         }
     }
 }
@@ -33,11 +41,17 @@ fun AutoDelete(
 @Preview
 @Composable
 fun AutoDeletePreviewOn() {
-    AutoDelete(true, {}, {})
+    AutoDelete(
+        AutoDeleteUiState(true, AutoDeleteChoice.ONE_YEAR),
+        onActivation = {},
+        onTimeLimitChanged = {})
 }
 
 @Preview
 @Composable
 fun AutoDeletePreviewOff() {
-    AutoDelete(false, {}, {})
+    AutoDelete(
+        AutoDeleteUiState(false, AutoDeleteChoice.ONE_YEAR),
+        onActivation = {},
+        onTimeLimitChanged = {})
 }
