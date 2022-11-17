@@ -11,6 +11,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -50,17 +51,12 @@ fun TextButton(
     text: Int,
     modifier: Modifier = Modifier,
     isEnabled: Boolean = true,
+    color:Color = MaterialTheme.colors.onBackground,
     onClick: (() -> Unit)
 ) {
     Box(
-        modifier = modifier.clickable { onClick() }
+        modifier = modifier.clickable { if(isEnabled) onClick() }
     ) {
-        val color = if (isEnabled) {
-            MaterialTheme.colors.onBackground
-        } else {
-            MaterialTheme.colors.onBackgroundDisabled
-        }
-
         Text(
             text = stringResource(id = text),
             style = MaterialTheme.typography.body2.copy(

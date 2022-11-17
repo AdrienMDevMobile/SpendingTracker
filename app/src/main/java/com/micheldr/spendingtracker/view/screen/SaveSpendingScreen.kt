@@ -168,7 +168,8 @@ fun OptionShowMore(
             viewModel.notifyViewAction(
                 SpendingsViewModel.ViewAction.IsAutoDeleteChanged(it)
             )
-        }, onTimeLimitChanged = { })
+        }, onTimeLimitChanged = { time ->
+            viewModel.notifyViewAction(SpendingsViewModel.ViewAction.AutoDeleteOptionChangedChanged(time)) })
     }
 }
 
