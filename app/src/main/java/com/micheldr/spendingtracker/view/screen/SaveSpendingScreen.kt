@@ -132,7 +132,6 @@ fun OptionShowMore(
         Column(horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .fillMaxWidth(0.35f)
-                .height(buttonHeight)
                 .constrainAs(middleColumn) {
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
@@ -141,16 +140,17 @@ fun OptionShowMore(
                 icon = R.drawable.ic_baseline_save_24,
                 onClick = {
                     viewModel.notifyViewAction(SpendingsViewModel.ViewAction.SaveSpending)
-                }
+                },
+                modifier = Modifier.fillMaxWidth().height(buttonHeight)
             )
 
             Spacer(modifier = Modifier.height(10.dp))
 
-            MoneyOriginChoice(viewModel.moneyOrigin.value) { state ->
+            MoneyOriginChoice(viewModel.moneyOrigin.value, onMoneyChoiceClick = { state ->
                 viewModel.notifyViewAction(
                     SpendingsViewModel.ViewAction.IsMoneyStateChanged(state)
                 )
-            }
+            }, modifier = Modifier.height(buttonHeight*2))
         }
 
         val autoDelete = viewModel.autoDelete.collectAsState(
