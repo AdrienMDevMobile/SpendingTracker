@@ -5,7 +5,7 @@ import com.micheldr.spendingtracker.view.element.paginator.Item
 
 //https://betterprogramming.pub/double-header-lazycolumn-in-jetpack-compose-5cbbcece75ec
 data class SpendingUiState(
-    val value: Int,
+    val value: String,
     val date: String,
     val month: String,
     val year: String,

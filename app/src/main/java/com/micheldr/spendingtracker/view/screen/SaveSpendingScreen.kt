@@ -59,9 +59,9 @@ fun SaveSpendingScreen(
                         .AmountChanged(newValue)
                 )
             }, leadingIcon = R.drawable.ic_baseline_euro_24,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal, imeAction = ImeAction.Next),
             isError = viewModel.amountError.value,
-            keyboardActions = KeyboardActions(onDone = { reasonFocusRequester.requestFocus() })
+            keyboardActions = KeyboardActions(onNext = { reasonFocusRequester.requestFocus() })
         )
 
         Spacer(modifier = Modifier.height(10.dp))
