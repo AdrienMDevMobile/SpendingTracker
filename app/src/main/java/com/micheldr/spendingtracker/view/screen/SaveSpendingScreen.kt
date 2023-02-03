@@ -190,6 +190,7 @@ fun OptionShowLess(
                 }) {
             ImageButton(
                 icon = R.drawable.ic_baseline_save_24,
+                Modifier.fillMaxWidth().height(buttonHeight)
             ) {
                 viewModel.notifyViewAction(SpendingsViewModel.ViewAction.SaveSpending)
             }
@@ -204,6 +205,7 @@ fun OptionShowLess(
                 }) {
             ImageButton(
                 icon = R.drawable.ic_baseline_keyboard_arrow_up_24,
+                Modifier.fillMaxWidth().height(buttonHeight)
             ) {
                 viewModel.notifyViewAction(SpendingsViewModel.ViewAction.ShowMore(true))
             }
