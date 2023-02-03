@@ -4,7 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import java.util.*
-
+import org.threeten.bp.OffsetDateTime
 
 @Dao
 interface SpendingDao {
@@ -15,6 +15,8 @@ interface SpendingDao {
     fun getSpendingsPaged(offset:Int, amount : Int): List<Spending>
     //    @Query("SELECT * FROM spending WHERE ROWNUM >=  :offset AND ROWNUM < :offset + :amount order by date")
 
+    @Query("DELETE FROM spending WHERE date > :selectedDate")
+    fun deleteBeforeDate(selectedDate: OffsetDateTime)
     /*
     @Query("SELECT * FROM user WHERE uid IN (:userIds)")
     fun loadAllByIds(userIds: IntArray): List<User>
