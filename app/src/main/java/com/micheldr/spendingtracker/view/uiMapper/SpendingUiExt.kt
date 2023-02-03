@@ -13,5 +13,5 @@ fun Spending.toUiState() = SpendingUiState(
     year = date?.toYearString() ?: "",
     reason = reason,
     highlight = highlight,
-    origin = moneyOrigin
+    origin = moneyOrigin,
 )

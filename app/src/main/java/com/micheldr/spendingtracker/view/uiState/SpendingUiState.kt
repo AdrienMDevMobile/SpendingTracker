@@ -11,7 +11,7 @@ data class SpendingUiState(
     val year: String,
     val reason: String,
     val highlight: Boolean = false,
-    val origin: MoneyOrigin
+    val origin: MoneyOrigin,
 ) : Item(
     year,
     month,

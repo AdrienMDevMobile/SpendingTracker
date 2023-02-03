@@ -3,7 +3,6 @@ package com.micheldr.spendingtracker.view.element
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
@@ -30,20 +29,16 @@ fun ImageButton(
     isEnabled: Boolean = true,
     onClick: (() -> Unit)
 ) {
-    Box(
-        modifier = modifier.clickable { onClick() }
-    ) {
-        Icon(
-            painter = painterResource(icon),
-            contentDescription = stringResource(R.string.save_button),
-            modifier = Modifier.fillMaxSize(),
-            tint = if (isEnabled) {
-                MaterialTheme.colors.onBackground
-            } else {
-                MaterialTheme.colors.onBackgroundDisabled
-            }
-        )
-    }
+    Icon(
+        painter = painterResource(icon),
+        contentDescription = stringResource(R.string.save_button),
+        modifier = modifier.clickable { onClick() },
+        tint = if (isEnabled) {
+            MaterialTheme.colors.onBackground
+        } else {
+            MaterialTheme.colors.onBackgroundDisabled
+        }
+    )
 }
 
 @Composable
@@ -51,11 +46,11 @@ fun TextButton(
     text: Int,
     modifier: Modifier = Modifier,
     isEnabled: Boolean = true,
-    color:Color = MaterialTheme.colors.onBackground,
+    color: Color = MaterialTheme.colors.onBackground,
     onClick: (() -> Unit)
 ) {
     Box(
-        modifier = modifier.clickable { if(isEnabled) onClick() }
+        modifier = modifier.clickable { if (isEnabled) onClick() }
     ) {
         Text(
             text = stringResource(id = text),
