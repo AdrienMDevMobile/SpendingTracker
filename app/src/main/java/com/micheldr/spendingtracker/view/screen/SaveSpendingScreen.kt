@@ -213,15 +213,18 @@ fun OptionShowLess(
     }
 }
 
+/*
+Offset date time ne gère visiblement pas le mois de la même manière ?
+Ce qui force a faire balader ces month - 1 puis month + 1
+ */
 fun datePicker(
     context: Context,
     listener: DatePickerDialog.OnDateSetListener,
     date: OffsetDateTime
-) =
-    DatePickerDialog(
+) = DatePickerDialog(
         context,
         listener,
-        date.year, date.monthValue, date.dayOfMonth
+        date.year, date.monthValue - 1, date.dayOfMonth
     )
 
 fun onDateClick(viewModel: SpendingsViewModel, mYear: Int, mMonth: Int, mDayOfMonth: Int) {
