@@ -10,6 +10,7 @@ import com.micheldr.spendingtracker.data.AutoDeleteRepositoryImpl.PreferencesKey
 import com.micheldr.spendingtracker.domain.arch.ExecuteResponse
 import com.micheldr.spendingtracker.domain.arch.ExecuteResult
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import java.io.IOException
 
@@ -47,4 +48,7 @@ class AutoDeleteRepositoryImpl(private val dataStore: DataStore<Preferences>) :
                 preferences[AUTO_DELETE_OPTION].toAutoDeleteChoice()
             )
         }
+
+    override suspend fun getUserAutoDeletePreferences(): AutoDeleteOption =
+        userAutoDeletePreferencesFlow.first()
 }

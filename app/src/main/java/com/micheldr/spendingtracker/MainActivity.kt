@@ -13,19 +13,12 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.datastore.preferences.preferencesDataStore
-import com.micheldr.spendingtracker.domain.useCase.GetAutoDeleteUseCaseImpl
-import com.adrienmandroid.datastore.useCase.SetAutoDeleteActivatedUseCaseImpl
 import com.jakewharton.threetenabp.AndroidThreeTen
-import com.micheldr.spendingtracker.data.AutoDeleteRepositoryImpl
-import com.micheldr.spendingtracker.domain.useCase.MoneyOriginsUseCaseImpl
-import com.micheldr.spendingtracker.domain.useCase.SetAutoDeleteChoiceUseCaseImpl
-import com.micheldr.spendingtracker.domain.useCase.SpendingUseCaseFactory
+import com.micheldr.spendingtracker.domain.useCase.SpendingFactory
 import com.micheldr.spendingtracker.ui.theme.SpendingTrackerTheme
 import com.micheldr.spendingtracker.view.screen.SaveSpendingScreen
 import com.micheldr.spendingtracker.view.screen.SpendingListScreen
-import com.micheldr.spendingtracker.view.viewmodel.SpendingViewModelImpl
 import com.micheldr.spendingtracker.view.viewmodel.SpendingsViewModel
-
 
 class MainActivity : ComponentActivity() {
 
@@ -42,21 +35,14 @@ class MainActivity : ComponentActivity() {
 
         AndroidThreeTen.init(this)
 
-        val factory = SpendingUseCaseFactory(applicationContext)
-        val autoDeleteRepo = AutoDeleteRepositoryImpl(dataStore)
-        val viewModel = SpendingViewModelImpl(
-            factory.saveSpendingUseCase,
-            factory.getSpendingsPaginateUseCase,
-            GetAutoDeleteUseCaseImpl(autoDeleteRepo),
-            SetAutoDeleteActivatedUseCaseImpl(autoDeleteRepo),
-            SetAutoDeleteChoiceUseCaseImpl(autoDeleteRepo),
-            MoneyOriginsUseCaseImpl()
-        )
+        val factory = SpendingFactory(applicationContext, dataStore)
+        val viewModel = factory.getSpendingViewModel
 
-        viewModel.actionsToScreen.observe(this){ action ->
-            when(action){
+        viewModel.actionsToScreen.observe(this) { action ->
+            when (action) {
                 SpendingsViewModel.ActionToScreen.SavingComplete ->
-                    Toast.makeText(this, getString(R.string.save_successful), Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, getString(R.string.save_successful), Toast.LENGTH_LONG)
+                        .show()
             }
 
         }
@@ -64,9 +50,11 @@ class MainActivity : ComponentActivity() {
         setContent {
             SpendingTrackerTheme {
 
-                ConstraintLayout(modifier = Modifier
-                    .fillMaxSize()
-                    .padding(10.dp)) {
+                ConstraintLayout(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(10.dp)
+                ) {
                     val (list, save) = createRefs()
 
                     SaveSpendingScreen(viewModel = viewModel, modifier = Modifier

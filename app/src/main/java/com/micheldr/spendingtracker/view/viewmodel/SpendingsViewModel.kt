@@ -13,7 +13,6 @@ import kotlinx.coroutines.flow.Flow
 import org.threeten.bp.OffsetDateTime
 
 abstract class SpendingsViewModel() : ViewModel() {
-
     abstract val amount: MutableState<String>
     abstract val reason: MutableState<String>
     abstract val date: MutableState<OffsetDateTime>
@@ -37,6 +36,7 @@ abstract class SpendingsViewModel() : ViewModel() {
         class ShowMore(val show: Boolean) : ViewAction()
         object SaveSpending : ViewAction()
         object LoadSpending : ViewAction()
+        object PaginateSpending : ViewAction()
         object ActionToScreenCompleted : ViewAction()
 
     }

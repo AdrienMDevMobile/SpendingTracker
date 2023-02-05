@@ -7,4 +7,5 @@ interface AutoDeleteRepository {
     suspend fun setActivated(activated: Boolean): ExecuteResponse<Nothing?>
     suspend fun setChoice(option: AutoDeleteChoice): ExecuteResponse<Nothing?>
     val userAutoDeletePreferencesFlow: Flow<AutoDeleteOption>
+    suspend fun getUserAutoDeletePreferences(): AutoDeleteOption
 }

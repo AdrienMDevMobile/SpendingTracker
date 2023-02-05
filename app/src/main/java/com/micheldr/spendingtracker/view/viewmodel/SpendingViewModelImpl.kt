@@ -5,16 +5,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.micheldr.spendingtracker.domain.useCase.IGetAutoDeleteUseCase
-import com.micheldr.spendingtracker.domain.useCase.ISetAutoDeleteActivatedUseCase
 import com.micheldr.spendingtracker.data.AutoDeleteChoice
 import com.micheldr.spendingtracker.data.MoneyOrigin
 import com.micheldr.spendingtracker.data.Spending
 import com.micheldr.spendingtracker.domain.SpendingError
-import com.micheldr.spendingtracker.domain.useCase.IGetSpendingsPaginatedUseCase
-import com.micheldr.spendingtracker.domain.useCase.IMoneyOriginsUseCase
-import com.micheldr.spendingtracker.domain.useCase.ISaveSpendingUseCase
-import com.micheldr.spendingtracker.domain.useCase.ISetAutoDeleteChoiceUseCase
+import com.micheldr.spendingtracker.domain.useCase.*
 import com.micheldr.spendingtracker.view.data.MoneyOriginChoiceClick
 import com.micheldr.spendingtracker.view.element.paginator.PaginatorImpl
 import com.micheldr.spendingtracker.view.uiMapper.toUiState
@@ -33,6 +28,7 @@ class SpendingViewModelImpl(
     getAutoDeleteUseCase: IGetAutoDeleteUseCase,
     private val setAutoDeleteActivatedUseCase: ISetAutoDeleteActivatedUseCase,
     private val setAutoDeleteChoiceUseCase: ISetAutoDeleteChoiceUseCase,
+    private val autoDeleteUseCase: IAutoDeleteUseCase,
     getMoneyOriginUseCase: IMoneyOriginsUseCase,
 ) : SpendingsViewModel() {
     override val amount = mutableStateOf("")
@@ -40,7 +36,9 @@ class SpendingViewModelImpl(
     override val date = mutableStateOf(now())
     override val isHighlight = mutableStateOf(false)
     override lateinit var moneyOrigin: MutableState<MoneyOrigin>
-    override val autoDelete: Flow<AutoDeleteUiState> = getAutoDeleteUseCase.flow.map { it.toUiState() }
+    override val autoDelete: Flow<AutoDeleteUiState> = getAutoDeleteUseCase.flow.map {
+        it.toUiState()
+    }
     override val amountError = mutableStateOf(false)
     override val errorMessage: MutableState<SpendingError?> = mutableStateOf(null)
     override val spendingsState = mutableStateOf(SavingsListScreenState())
@@ -89,6 +87,7 @@ class SpendingViewModelImpl(
             is ViewAction.IsAutoDeleteChanged -> onIsAutoDeleteChanged(action.activated)
             is ViewAction.AutoDeleteOptionChangedChanged -> onAutoDeleteChoiceChanged(action.value)
             is ViewAction.LoadSpending -> onLoadSpending()
+            is ViewAction.PaginateSpending -> loadNextItem()
             is ViewAction.ActionToScreenCompleted -> onActionToScreenCompleted()
             is ViewAction.ShowMore -> onShowMore(action.show)
         }
@@ -184,13 +183,14 @@ class SpendingViewModelImpl(
         }
     }
 
-    fun loadNextItem() {
+    private fun loadNextItem() {
         viewModelScope.launch {
             paginator.loadNextItem()
         }
     }
 
     private fun onLoadSpending() {
+        startAutoDelete()
         loadNextItem()
     }
 
@@ -200,5 +200,11 @@ class SpendingViewModelImpl(
 
     private fun onShowMore(show: Boolean) {
         showMore.value = show
+    }
+
+    private fun startAutoDelete() {
+        viewModelScope.launch {
+            autoDeleteUseCase.execute(now())
+        }
     }
 }
