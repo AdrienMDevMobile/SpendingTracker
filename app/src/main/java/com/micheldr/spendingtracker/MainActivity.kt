@@ -8,8 +8,8 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Scaffold
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.datastore.preferences.preferencesDataStore
@@ -49,36 +49,39 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             SpendingTrackerTheme {
+                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                    ConstraintLayout(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(innerPadding)
+                    ) {
+                        val (list, save) = createRefs()
 
-                ConstraintLayout(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(10.dp)
-                ) {
-                    val (list, save) = createRefs()
+                        SaveSpendingScreen(viewModel = viewModel, modifier = Modifier
+                            .fillMaxWidth()
+                            .constrainAs(save) {
+                                height = Dimension.wrapContent
+                                bottom.linkTo(parent.bottom)
+                                top.linkTo(list.bottom)
+                                start.linkTo(parent.start)
+                                end.linkTo(parent.end)
+                            }
+                        )
+                        SpendingListScreen(viewModel = viewModel, modifier = Modifier
+                            .fillMaxWidth()
+                            .constrainAs(list) {
+                                height = Dimension.fillToConstraints
+                                top.linkTo(parent.top)
+                                bottom.linkTo(save.top)
+                                start.linkTo(parent.start)
+                                end.linkTo(parent.end)
+                            }
 
-                    SaveSpendingScreen(viewModel = viewModel, modifier = Modifier
-                        .fillMaxWidth()
-                        .constrainAs(save) {
-                            height = Dimension.wrapContent
-                            bottom.linkTo(parent.bottom)
-                            top.linkTo(list.bottom)
-                            start.linkTo(parent.start)
-                            end.linkTo(parent.end)
-                        }
-                    )
-                    SpendingListScreen(viewModel = viewModel, modifier = Modifier
-                        .fillMaxWidth()
-                        .constrainAs(list) {
-                            height = Dimension.fillToConstraints
-                            top.linkTo(parent.top)
-                            bottom.linkTo(save.top)
-                            start.linkTo(parent.start)
-                            end.linkTo(parent.end)
-                        }
-
-                    )
+                        )
+                    }
                 }
+
+
             }
         }
     }
