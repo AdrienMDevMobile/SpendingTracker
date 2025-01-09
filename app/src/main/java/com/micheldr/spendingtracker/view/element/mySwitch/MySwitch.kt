@@ -237,7 +237,7 @@ private fun BoxScope.SwitchImpl(
 }
 
 private fun DrawScope.drawTrack(trackColor: Color, trackWidth: Float, strokeWidth: Float) {
-    val strokeRadius = strokeWidth / 2
+    val strokeRadius = trackWidth / 4
     drawLine(
         trackColor,
         Offset(strokeRadius, center.y),
@@ -249,7 +249,7 @@ private fun DrawScope.drawTrack(trackColor: Color, trackWidth: Float, strokeWidt
 
 internal val TrackPadding = 2.dp
 internal val TrackWidth = 34.dp
-internal val TrackStrokeWidth = 14.dp
+internal val TrackStrokeWidth = 17.dp
 internal val ThumbDiameter = 20.dp
 
 private val ThumbRippleRadius = 24.dp
