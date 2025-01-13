@@ -30,29 +30,32 @@ fun AutoDelete(
         )
 
         //TODO remplacer par une génération automatique, depuis une liste
-        FlowRow {
-            TextButton(R.string.delete_one_year, isEnabled = uiState.isActivated, color = AutoDeleteChoice.ONE_YEAR.autoDeleteButtonColor(
+        FlowRow { TextButton(
+                stringResource(id = R.string.delete_one_year),
                 isEnabled = uiState.isActivated,
-                selectedChoice = uiState.autoDeleteChosen
-            )) {
+                isActive = (AutoDeleteChoice.ONE_YEAR == uiState.autoDeleteChosen)
+            ) {
                 onTimeLimitChanged(AutoDeleteChoice.ONE_YEAR)
             }
-            TextButton(R.string.delete_three_months, isEnabled = uiState.isActivated, color = AutoDeleteChoice.THREE_MONTH.autoDeleteButtonColor(
+            TextButton(
+                stringResource(id = R.string.delete_three_months),
                 isEnabled = uiState.isActivated,
-                selectedChoice = uiState.autoDeleteChosen
-            )) {
+                isActive = (AutoDeleteChoice.THREE_MONTH == uiState.autoDeleteChosen)
+            ) {
                 onTimeLimitChanged(AutoDeleteChoice.THREE_MONTH)
             }
-            TextButton(R.string.delete_one_month, isEnabled = uiState.isActivated, color = AutoDeleteChoice.ONE_MONTH.autoDeleteButtonColor(
+            TextButton(
+                stringResource(id = R.string.delete_one_month),
                 isEnabled = uiState.isActivated,
-                selectedChoice = uiState.autoDeleteChosen
-            )) {
+                isActive = (AutoDeleteChoice.ONE_MONTH == uiState.autoDeleteChosen)
+            ) {
                 onTimeLimitChanged(AutoDeleteChoice.ONE_MONTH)
             }
-            TextButton(R.string.delete_one_week, isEnabled = uiState.isActivated, color = AutoDeleteChoice.ONE_WEEK.autoDeleteButtonColor(
+            TextButton(
+                stringResource(id = R.string.delete_one_week),
                 isEnabled = uiState.isActivated,
-                selectedChoice = uiState.autoDeleteChosen
-            )) {
+                isActive = (AutoDeleteChoice.ONE_WEEK == uiState.autoDeleteChosen)
+            ) {
                 onTimeLimitChanged(AutoDeleteChoice.ONE_WEEK)
             }
         }
