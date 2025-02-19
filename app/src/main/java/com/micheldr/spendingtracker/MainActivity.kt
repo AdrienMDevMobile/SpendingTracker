@@ -43,6 +43,8 @@ class MainActivity : ComponentActivity() {
                 SpendingsViewModel.ActionToScreen.SavingComplete ->
                     Toast.makeText(this, getString(R.string.save_successful), Toast.LENGTH_LONG)
                         .show()
+
+                null -> {}
             }
 
         }

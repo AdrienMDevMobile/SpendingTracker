@@ -35,14 +35,14 @@ class SpendingViewModelImpl(
     override val reason = mutableStateOf("")
     override val date = mutableStateOf(now())
     override val isHighlight = mutableStateOf(false)
-    override lateinit var moneyOrigin: MutableState<MoneyOrigin>
+    override var moneyOrigin: MutableState<MoneyOrigin>
     override val autoDelete: Flow<AutoDeleteUiState> = getAutoDeleteUseCase.flow.map {
         it.toUiState()
     }
     override val amountError = mutableStateOf(false)
     override val errorMessage: MutableState<SpendingError?> = mutableStateOf(null)
     override val spendingsState = mutableStateOf(SavingsListScreenState())
-    override val actionsToScreen = MutableLiveData<ActionToScreen>(null)
+    override val actionsToScreen = MutableLiveData<ActionToScreen?>(null)
     override val showMore = mutableStateOf(false)
 
     private val moneyStates = getMoneyOriginUseCase.execute()
