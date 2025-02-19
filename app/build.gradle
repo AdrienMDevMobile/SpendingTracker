@@ -2,10 +2,14 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
+    id 'com.google.devtools.ksp'
+    id 'org.jetbrains.kotlin.plugin.compose'
 }
 
 android {
     compileSdk 33
+
+    namespace = "com.micheldr.spendingtracker"
 
     defaultConfig {
         applicationId "com.micheldr.spendingtracker"
@@ -35,9 +39,6 @@ android {
     }
     buildFeatures {
         compose true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion compose_version
     }
     packagingOptions {
         resources {
@@ -70,7 +71,7 @@ dependencies {
 
     // optional - Kotlin Extensions and Coroutines support for Room
     implementation("androidx.room:room-ktx:$room_version")
-    kapt "androidx.room:room-compiler:$room_version"
+    ksp "androidx.room:room-compiler:$room_version"
 
     implementation 'com.jakewharton.threetenabp:threetenabp:1.4.0'
 
